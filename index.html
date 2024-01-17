@@ -2,7 +2,7 @@
 <html lang="en" data-bs-theme="dark">
 
 <head>
-    <title>App Name a Coding Challange</title>
+    <title>Sum of Array Elements a Coding Challange</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -26,17 +26,18 @@
 
     <main class="mb-5">
         <div class="container mt-5">
-            <h1>App Name</h1>
+            <h1>Sum of Array Elements</h1>
             <p class="lead">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempora doloribus numquam nesciunt maiores
-                repellendus dolorum. Esse voluptatem odit est iusto alias, vel quaerat laboriosam nobis.
+                This web application takes a user's input, validates it to ensure it's not too long, extracts and sums
+                up numeric values
+                (separated by commas) from the input, and then displays the original numbers along with their sum.
             </p>
             <ul class="checklist">
-                <li><i class="bi bi-check2-square"></i>Lorem ipsum dolor sit amet.</li>
-                <li><i class="bi bi-check2-square"></i>Lorem ipsum dolor sit amet.</li>
-                <li><i class="bi bi-check2-square"></i>Lorem ipsum dolor sit amet.</li>
-                <li><i class="bi bi-check2-square"></i>Lorem ipsum dolor sit amet.</li>
-                <li><i class="bi bi-check2-square"></i>Lorem ipsum dolor sit amet.</li>
+                <li><i class="bi bi-check2-square"></i>Input Validation</li>
+                <li><i class="bi bi-check2-square"></i>Array Manipulation</li>
+                <li><i class="bi bi-check2-square"></i>Modular Functions</li>
+                <li><i class="bi bi-check2-square"></i>Error Handling</li>
+                <li><i class="bi bi-check2-square"></i>DOM Manipulation</li>
             </ul>
         </div>
         <div class="container mt-5">
@@ -47,25 +48,12 @@
                         <!-- Input -->
                         <form>
                             <div class="form-floating mb-3">
-                                <input type="number" class="form-control" id="number-input" value="1">
-                                <label for="number-input">Number Input</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input class="form-control" id="string-Input" value="Example text">
-                                <label for="string-Input">String Input</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <select class="form-select" id="select-input">
-                                    <option selected>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                                <label for="floatingSelect">Works with selects</label>
+                                <input class="form-control" id="user-input" value="1, 4, 6, 7, 22, 15">
+                                <label for="user-input">Values to Sum</label>
                             </div>
                             <div class="text-end">
-                                <button class="btn btn-outline-primary btn-lg" onclick="getValues()"
-                                    type="button">Controller Function Trigger</button>
+                                <button class="btn btn-outline-primary btn-lg" onclick="handleUserInput()"
+                                    type="button">Calculate Sum</button>
                             </div>
                         </form>
                     </div>
@@ -73,11 +61,11 @@
                 <div class="col-sm-8 order-first order-sm-0">
                     <p class="lead">Instructions</p>
                     <ol>
-                        <li>Lorem ipsum dolor sit amet.</li>
-                        <li>Lorem ipsum dolor sit amet.</li>
-                        <li>Lorem ipsum dolor sit amet.</li>
-                        <li>Lorem ipsum dolor sit amet.</li>
-                        <li>Lorem ipsum dolor sit amet.</li>
+                        <li>Enter numeric values separated by commas into the input field.</li>
+                        <li>Make sure the total characters are less than 150.</li>
+                        <li>Click the "Calculate" button to process the input.</li>
+                        <li>View the formatted results showing the original numbers and their sum.</li>
+                        <li>Repeat the process with different inputs as needed.</li>
                     </ol>
                 </div>
                 <div class="col-12">
@@ -85,6 +73,8 @@
                         style="max-height: 500px; overflow: auto;">
                         <div id="results" class="text-center">
                             <!-- Results -->
+                            <span class="text-muted"></span>
+                            <h1 class="text-primary"></h1>
                         </div>
                     </div>
                 </div>
@@ -96,34 +86,79 @@
             <div class="card bg-body-secondary mt-4 mb-3">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <button onclick="expandThumnail('firstFunctionThumnail', 'firstFunctionContent')" type="button"
-                            data-bs-toggle="modal" data-bs-target="#firstFunctionModal" id="firstFunctionThumnail"
-                            class="p-2 w-100 thumbnailCode hover-zoom bg-body-secondary">
+                        <button onclick="expandThumnail('handleUserInputThumnail', 'handleUserInputContent')"
+                            type="button" data-bs-toggle="modal" data-bs-target="#handleUserInputModal"
+                            id="handleUserInputThumnail" class="p-2 w-100 thumbnailCode hover-zoom bg-body-secondary">
                             <pre class="line-numbers rounded">
-                                <code class="language-JS"></code>
+                                <code class="language-JS">
+                                    // Controller
+function handleUserInput(){
+
+    // Get input from user
+    let inputValue = document.getElementById('user-input').value;
+
+    // Input Validation
+    if (inputValue.length > 150) {
+        
+        // Error message
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Enter less than 150 characters",
+        });
+
+        return;
+    }
+
+    // Covert into array (keep only numbers, separated by commas)
+    let filteredInput = inputValue.replace(/[^0-9,.]/g, '');
+    let numbersArrayValue = filteredInput.split(',');
+
+    // Convert each into a number
+    let numericArray = [];
+    numbersArrayValue.forEach(numberValue => {
+
+        // Convert to integer
+        let number = Number.parseInt(numberValue);
+
+        // Add only if it's an valid number
+        if (!Number.isNaN(number)) {
+            
+            numericArray.push(number);
+        }
+    });
+
+    // Calculate the sum
+    let arraySum = calculateArraySum(numericArray);
+
+    // Display results
+    displayResult(arraySum, numericArray);
+}
+                                </code>
                             </pre>
                         </button>
                     </div>
                     <div class="col-md-8">
                         <div class="card-body h-100">
-                            <h5 class="card-title">Controller (firstFunction)</h5>
+                            <h5 class="card-title">Controller (handleUserInput)</h5>
                             <p class="card-text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni quidem assumenda libero,
-                                cum mollitia animi fugit porro aut amet dignissimos, sed quia similique dolor vitae?
-                                Sint eum dolore atque voluptate!
+                                Gathers numbers entered by the user, checks for input length, filters out non-numeric
+                                characters, and computes the sum
+                                for display.
                             </p>
                             <!-- Modal -->
-                            <div class="modal fade modal-lg" id="firstFunctionModal" tabindex="-1"
-                                aria-labelledby="firstFunctionModalLabel" aria-hidden="true">
+                            <div class="modal fade modal-lg" id="handleUserInputModal" tabindex="-1"
+                                aria-labelledby="handleUserInputModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="firstFunctionModalLabel">firstFunction()
+                                            <h1 class="modal-title fs-5" id="handleUserInputModalLabel">
+                                                handleUserInput()
                                             </h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
-                                        <div id="firstFunctionContent" class="modal-body fullCode">
+                                        <div id="handleUserInputContent" class="modal-body fullCode">
                                             <pre class="line-numbers"></pre>
                                         </div>
                                         <div class="modal-footer">
@@ -141,35 +176,51 @@
             <div class="card bg-body-secondary mt-4 mb-3">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <button onclick="expandThumnail('secondFunctionThumnail', 'secondFunctionContent')"
-                            type="button" data-bs-toggle="modal" data-bs-target="#secondFunctionModal"
-                            id="secondFunctionThumnail" class="p-2 w-100 thumbnailCode hover-zoom  bg-body-secondary">
+                        <button onclick="expandThumnail('calculateArraySumThumnail', 'calculateArraySumContent')"
+                            type="button" data-bs-toggle="modal" data-bs-target="#calculateArraySumModal"
+                            id="calculateArraySumThumnail"
+                            class="p-2 w-100 thumbnailCode hover-zoom  bg-body-secondary">
                             <pre class="line-numbers rounded">
-                                <code class="language-JS"></code>
+                                <code class="language-JS">
+                                    // Logic
+function calculateArraySum(numericArray){
+
+    // Total sum of array
+    let totalSum = 0;
+
+    // Add each number to total sum
+    for (let i = 0; i &lt; numericArray.length; i++) {
+
+        totalSum += numericArray[i];
+    }
+
+    // Return result
+    return totalSum;
+}
+                                </code>
                             </pre>
                         </button>
                     </div>
                     <div class="col-md-8">
                         <div class="card-body h-100">
-                            <h5 class="card-title">Logic (secondFunction)</h5>
+                            <h5 class="card-title">Logic (calculateArraySum)</h5>
                             <p class="card-text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, fugit, quasi
-                                mollitia voluptate culpa quibusdam delectus quam nemo magnam error saepe similique
-                                reprehenderit totam a architecto aperiam. Magnam, eaque voluptate!
+                                Takes an array of numbers and calculates their total sum, contributing to the final
+                                result displayed to the user.
                             </p>
                             <!-- Modal -->
-                            <div class="modal fade modal-lg" id="secondFunctionModal" tabindex="-1"
-                                aria-labelledby="secondFunctionModalLabel" aria-hidden="true">
+                            <div class="modal fade modal-lg" id="calculateArraySumModal" tabindex="-1"
+                                aria-labelledby="calculateArraySumModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="secondFunctionModalLabel">
-                                                secondFunction()
+                                            <h1 class="modal-title fs-5" id="calculateArraySumModalLabel">
+                                                calculateArraySum()
                                             </h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
-                                        <div id="secondFunctionContent" class="modal-body fullCode">
+                                        <div id="calculateArraySumContent" class="modal-body fullCode">
                                             <pre class="line-numbers"></pre>
                                         </div>
                                         <div class="modal-footer">
@@ -187,34 +238,45 @@
             <div class="card bg-body-secondary mt-4 mb-3">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <button onclick="expandThumnail('thirdFunctionThumnail', 'thirdFunctionContent')" type="button"
-                            data-bs-toggle="modal" data-bs-target="#thirdFunctionModal" id="thirdFunctionThumnail"
+                        <button onclick="expandThumnail('displayResultThumnail', 'displayResultContent')" type="button"
+                            data-bs-toggle="modal" data-bs-target="#displayResultModal" id="displayResultThumnail"
                             class="p-2 w-100 thumbnailCode hover-zoom bg-body-secondary">
                             <pre class="line-numbers rounded">
-                                <code class="language-JS"></code>
+                                <code class="language-JS">
+                                    // View
+function displayResult(arraySum, numericArray){
+
+    // Format the result as HTML
+    let formattedResults = `&lt;span class="text-muted mb-3">[${numericArray}]&lt;/span>
+                            &lt;h1 class="text-primary">${arraySum}&lt;/h1>`;
+    
+    // Display on the DOM
+    document.getElementById('results').innerHTML = formattedResults;
+    document.getElementById('resultsContainer').classList.remove('d-none');
+}
+                                </code>
                             </pre>
                         </button>
                     </div>
                     <div class="col-md-8">
                         <div class="card-body h-100">
-                            <h5 class="card-title">View (thirdFunction)</h5>
+                            <h5 class="card-title">View (displayResult)</h5>
                             <p class="card-text">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia rerum consequatur ad
-                                reiciendis! Odio assumenda tempore consequuntur autem quia. Laboriosam voluptatem id
-                                sunt ad esse asperiores maiores harum a repellat?
+                                Formats and visually presents the original numbers and their sum on the webpage, making
+                                the result clear and accessible.
                             </p>
                             <!-- Modal -->
-                            <div class="modal fade modal-lg" id="thirdFunctionModal" tabindex="-1"
-                                aria-labelledby="thirdFunctionModalLabel" aria-hidden="true">
+                            <div class="modal fade modal-lg" id="displayResultModal" tabindex="-1"
+                                aria-labelledby="displayResultModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="thirdFunctionModalLabel">thirdFunction()
+                                            <h1 class="modal-title fs-5" id="displayResultModalLabel">displayResult()
                                             </h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
-                                        <div id="thirdFunctionContent" class="modal-body fullCode">
+                                        <div id="displayResultContent" class="modal-body fullCode">
                                             <pre class="line-numbers"></pre>
                                         </div>
                                         <div class="modal-footer">
